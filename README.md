@@ -31,3 +31,17 @@ pip install flake8
 sudo apt install ack-grep  # Ubuntu/Debian
 brew install ack           # macOS
 ```
+
+5. 如果没有nodejs 安装，需要采用：
+```
+brew install node
+```
+
+6. 安装Coc 扩展：
+通过vim 打开任意文件, 执行
+```
+:CocInstall coc-pyright
+:CocInstall coc-json
+:CocInstall coc-html
+:CocInstall coc-css
+```
