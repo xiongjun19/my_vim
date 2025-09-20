@@ -127,18 +127,14 @@ nnoremap <F2> :NERDTreeToggle<CR>
 nnoremap <F3> :NERDTreeTabsToggle<CR>
 nnoremap <Leader>f :NERDTreeTabsFind<CR>
 
-" Jedi-vim设置
-" let g:jedi#goto_command = "<leader>d"
-" let g:jedi#completions_command = "<C-c>"
-
 " Coc 扩展
 let g:coc_global_extensions = [
-  \ 'coc-pyright',      " Python 支持
-  \ 'coc-json',         " JSON 支持
-  \ 'coc-html',         " HTML 支持
-  \ 'coc-css',          " CSS 支持
-  \ 'coc-tsserver',     " TypeScript/JavaScript
-  \ 'coc-vimlsp',       " Vim script 支持
+  \ 'coc-pyright',
+  \ 'coc-json',
+  \ 'coc-html',
+  \ 'coc-css',
+  \ 'coc-tsserver',
+  \ 'coc-vimlsp',      
   \ ]
 
 " 保持与 jedi-vim 相似的快捷键映射
