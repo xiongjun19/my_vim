@@ -1,0 +1,200 @@
+" 基本设置
+set encoding=utf-8
+set nocompatible
+set hlsearch
+set fileencodings=utf-8,ucs-bom,GB2312,big5
+set cursorline
+set autoindent
+set smartindent
+set scrolloff=4
+set showmatch
+set number
+set nowrap
+set ignorecase
+set smartcase
+
+" 代码折叠
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+" 窗口导航
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" 文件类型特定设置
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set fileformat=unix
+
+au BufNewFile,BufRead *.js,*.html,*.css
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2
+
+" 高亮尾随空格
+hi BadWhitespace guifg=gray guibg=red ctermfg=gray ctermbg=red
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+" 编译运行功能
+nnoremap <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+        exec "w"
+        if &filetype == 'c'
+                exec "!g++ % -o %<"
+                exec "!time ./%<"
+        elseif &filetype == 'cpp'
+                exec "!g++ % -o %<"
+                exec "!time ./%<"
+        elseif &filetype == 'java'
+                exec "!javac %"
+                exec "!time java %<"
+        elseif &filetype == 'sh'
+                :!time bash %
+        elseif &filetype == 'python'
+                exec "!clear"
+                exec "!time python3 %"
+        elseif &filetype == 'html'
+                exec "!firefox % &"
+        elseif &filetype == 'go'
+                exec "!time go run %"
+        elseif &filetype == 'mkd'
+                exec "!~/.vim/markdown.pl % > %.html &"
+                exec "!firefox %.html &"
+        endif
+endfunc
+
+" ========== vim-plug 插件管理 ==========
+call plug#begin('~/.vim/plugged')
+
+" 在这里添加您的插件
+Plug 'preservim/nerdtree'               " 文件树
+Plug 'jistr/vim-nerdtree-tabs'          " NERDTree tabs支持
+Plug 'ctrlpvim/ctrlp.vim'               " 模糊文件查找 (比F3更强大)
+Plug 'mileszs/ack.vim'                  " 代码搜索
+
+" 自动补全和语法
+Plug 'davidhalter/jedi-vim'             " Python自动补全
+Plug 'jiangmiao/auto-pairs'             " 自动括号补全
+Plug 'tpope/vim-commentary'             " 快速注释代码
+
+" 状态栏和外观
+Plug 'vim-airline/vim-airline'          " 漂亮的状态栏
+Plug 'vim-airline/vim-airline-themes'   " 状态栏主题
+Plug 'morhetz/gruvbox'                  " 流行的颜色主题
+
+" Git集成
+Plug 'tpope/vim-fugitive'              " Git集成
+Plug 'airblade/vim-gitgutter'          " Git更改指示器
+
+" 语法高亮和检查
+Plug 'vim-syntastic/syntastic'         " 语法检查
+Plug 'nvie/vim-flake8'                 " Python代码检查
+
+" 代码编辑增强
+Plug 'tpope/vim-surround'              " 快速编辑包围符号
+Plug 'terryma/vim-multiple-cursors'    " 多光标编辑
+Plug 'yggdroot/indentline'             " 显示缩进线
+
+" 语言特定支持
+Plug 'pangloss/vim-javascript'         " JavaScript增强
+Plug 'othree/html5.vim'                " HTML5支持
+Plug 'hail2u/vim-css3-syntax'          " CSS3语法高亮
+
+call plug#end()
+
+" 基本设置
+set clipboard=unnamed
+set backspace=2
+
+" 语法高亮
+let python_highlight_all=1
+syntax on
+filetype plugin indent on
+
+" NERDTree设置
+nnoremap <F2> :NERDTreeToggle<CR>
+nnoremap <F3> :NERDTreeTabsToggle<CR>
+nnoremap <Leader>f :NERDTreeTabsFind<CR>
+
+" Jedi-vim设置
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#completions_command = "<C-c>"
+
+
+" ========== 插件配置 ==========
+
+" vim-airline 配置
+let g:airline#extensions#tabline#enabled = 1 " 显示缓冲区标签
+let g:airline_powerline_fonts = 1           " 使用Powerline符号
+set laststatus=2                            " 总是显示状态栏
+
+" 主题设置
+colorscheme gruvbox
+set background=dark
+
+" CtrlP 配置
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'       " 从当前目录开始搜索
+
+" 语法检查配置
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Python特定配置
+let g:syntastic_python_checkers = ['flake8']
+let g:jedi#popup_on_dot = 0                 " 不在输入点时自动弹出补全
+
+" GitGutter 配置
+set signcolumn=yes                         " 总是显示标记列
+let g:gitgutter_sign_added = '│'
+let g:gitgutter_sign_modified = '│'
+let g:gitgutter_sign_removed = '│'
+
+" 缩进线配置
+let g:indentLine_char = '│'                " 缩进线字符
+let g:indentLine_concealcursor = 'inc'     " 光标所在行不隐藏
+
+" 注释插件配置
+noremap <leader>/ :Commentary<CR>          " 使用Leader+/注释
+
+" 多光标配置
+let g:multi_cursor_use_default_mapping=0
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
+
+
+" 实用键位映射
+nnoremap <leader>s :w<CR>                  " 快速保存
+nnoremap <leader>q :q<CR>                  " 快速退出
+nnoremap <leader>w :wq<CR>                 " 保存并退出
+
+" 缓冲区导航
+nnoremap <Tab> :bnext<CR>                  " 下一个缓冲区
+nnoremap <S-Tab> :bprevious<CR>            " 上一个缓冲区
+nnoremap <leader>bd :bd<CR>                " 关闭当前缓冲区
+
+" 快速移动
+nnoremap <C-d> <C-d>zz                     " 向下移动并居中
+nnoremap <C-u> <C-u>zz                     " 向上移动并居中
+nnoremap n nzz                             " 搜索下一个并居中
+nnoremap N Nzz                             " 搜索上一个并居中
+
+" Git命令
+nnoremap <leader>gs :Gstatus<CR>           " Git状态
+nnoremap <leader>gc :Gcommit<CR>           " Git提交
+nnoremap <leader>gp :Gpush<CR>             " Git推送
